@@ -15,26 +15,24 @@ constexpr Color B_COLOUR = BLACK;
 class Game {
 private:
     bool m_GameOver;
-    int m_RightScore, m_LeftScore, m_Score;
-    const char* m_WinnerNote;
+    int m_RightScore, m_LeftScore;
+    std::string m_WinnerNote;
 //    Ball ball;
 //    Racket racket;
 
 public:
     Game();
+
     ~Game();
 
     void Start();
 
     void Render();
-
+    void RenderStartMessage();
     void Update();
 
     void Terminate();
 
-
-
 };
-
 
 #endif //PONG_GAME_H

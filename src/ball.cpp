@@ -2,8 +2,8 @@
 #include "raylib.h"
 
 Ball::Ball() :
-        m_CoordX(WIN_HEIGHT/2.0f),
-        m_CoordY(WIN_HEIGHT/2.0f),
+        m_CoordX(WIN_HEIGHT/2),
+        m_CoordY(WIN_HEIGHT/2),
         m_Radius(10.0f),
         m_VelocityX(500),
         m_VelocityY(500)
