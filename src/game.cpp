@@ -1,9 +1,19 @@
 #include "game.h"
 
-Game::Game() : m_GameStarted(false), m_LeftScore(0), m_RightScore(0), m_WinnerNote("Draw")
+Game::Game() :
+    m_GameStarted(false),
+    m_LeftScore(0),
+    m_RightScore(0),
+    m_WinnerNote("Draw"),
+    ball(WIN_WIDTH, WIN_HEIGHT),
+    rightRacket(),
+    leftRacket()
 {
     InitWindow(WIN_WIDTH, WIN_HEIGHT, WIN_NAME);
     SetTargetFPS(FPS);
+
+    leftRacket.Position(40, float(WIN_HEIGHT) / 2);
+    rightRacket.Position(WIN_WIDTH - 40, float(WIN_HEIGHT) / 2);
 
     std::cout << "Construction successful\n";
 }
@@ -11,7 +21,7 @@ Game::Game() : m_GameStarted(false), m_LeftScore(0), m_RightScore(0), m_WinnerNo
 Game::~Game()
 {
     CloseWindow();
-    std::cout << "Deconstruction successful\n";
+    std::cout << "Destruction successful\n";
 }
 
 void Game::Start()
@@ -20,8 +30,8 @@ void Game::Start()
     {
         BeginDrawing();
 
-        Update();
         Render();
+        Update();
 
         EndDrawing();
     }
@@ -30,25 +40,89 @@ void Game::Start()
 void Game::Render()
 {
     ClearBackground(W_COLOUR);
-    ball.DrawBall();
-    DrawFPS(10, 10);
 
+
+
+    DrawFPS(10, 10);
 }
 
 void Game::Update()
 {
-    if (m_GameStarted == false)
-    {
-        int textWidth = MeasureText("Press SPACE to Start", 60);
-        DrawText("Press SPACE to Start", WIN_WIDTH / 2 - textWidth / 2, WIN_HEIGHT / 2 - 50, 60, B_COLOUR);
+    static float fadeAlpha = 1.0f;  // Fully visible at start
+    static float fadeDuration = 2.0f;  // Fade duration in seconds
+    static float elapsedTime = 0.0f;  // Timer
 
-        if (IsKeyPressed(KEY_SPACE))
-        {
-            DrawText(std::to_string(m_LeftScore).c_str(), (WIN_WIDTH/2)-120, (WIN_HEIGHT)-50, 30, B_COLOUR);
-            DrawText(std::to_string(m_RightScore).c_str(), (WIN_WIDTH/2)+100, (WIN_HEIGHT)-50, 30, B_COLOUR);
-            DrawLine(WIN_WIDTH/2, 0, WIN_WIDTH/2, WIN_HEIGHT, B_COLOUR);
-            m_GameStarted = true;
-        }
+    if (IsKeyPressed(KEY_SPACE))
+    {
+        m_GameStarted = true;
+        elapsedTime = 0.0f;  // Reset timer when space is pressed
     }
 
+// If game has started, begin fade effect
+    if (m_GameStarted && fadeAlpha > 0.0f) {
+        elapsedTime += GetFrameTime();  // Accumulate elapsed time
+        fadeAlpha = 1.0f - (elapsedTime / fadeDuration);  // Normalize fade over time
+
+        // Clamp fadeAlpha to avoid negative values
+        if (fadeAlpha < 0.0f) fadeAlpha = 0.0f;
+
+        // Draw fading black overlay
+        DrawRectangle(0, 0, WIN_WIDTH, WIN_HEIGHT, Fade(BLACK, fadeAlpha));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    static float fadeAlpha = 1.0f; // fade variable for the transition
+//
+//    if(!m_GameStarted)
+//    {
+//        int textWidth = MeasureText("Press SPACE to Start", 60);
+////        DrawText("Press SPACE to Start", WIN_WIDTH / 2 - textWidth / 2, WIN_HEIGHT / 2 - 50, 60, B_COLOUR);
+//        DrawText("Press SPACE to Start", WIN_WIDTH / 2 - textWidth / 2, WIN_HEIGHT / 2 - 50, 60, Fade(B_COLOUR, fadeAlpha));
+//
+//        if(IsKeyPressed(KEY_SPACE))
+//        {
+//            m_GameStarted = true;
+//        }
+//    } else
+//    {
+//        if(fadeAlpha > 0.0f)
+//        {
+//            fadeAlpha -= 0.01f;
+//        } else {
+//
+//            DrawText(std::to_string(m_LeftScore).c_str(), (WIN_WIDTH / 2) - 120, (WIN_HEIGHT) - 50, 30, B_COLOUR);
+//            DrawText(std::to_string(m_RightScore).c_str(), (WIN_WIDTH / 2) + 100, (WIN_HEIGHT) - 50, 30, B_COLOUR);
+//            DrawLine(WIN_WIDTH / 2, 0, WIN_WIDTH / 2, WIN_HEIGHT, B_COLOUR);
+//
+//            ball.DrawBall(B_COLOUR);
+//            rightRacket.DrawRacket(B_COLOUR);
+//            leftRacket.DrawRacket(B_COLOUR);
+//        }
+//    }
 }

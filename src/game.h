@@ -4,11 +4,12 @@
 #include <string>
 #include "raylib.h"
 #include "ball.h"
+#include "racket.h"
 
-constexpr int WIN_HEIGHT = 600;
-constexpr int WIN_WIDTH = 800;
+constexpr uint16_t WIN_HEIGHT = 600;
+constexpr uint16_t WIN_WIDTH = 800;
+constexpr uint16_t FPS = 60;
 constexpr const char* WIN_NAME = "PONG";
-constexpr int FPS = 60;
 constexpr Color W_COLOUR = RAYWHITE;
 constexpr Color B_COLOUR = BLACK;
 
@@ -18,7 +19,7 @@ private:
     int m_RightScore, m_LeftScore;
     std::string m_WinnerNote;
     Ball ball;
-//    Racket racket;
+    Racket leftRacket, rightRacket;
 
 public:
     Game();
@@ -28,10 +29,10 @@ public:
     void Start();
 
     void Render();
-    void RenderStartMessage();
+
     void Update();
 
-    void Terminate();
+//    void Terminate();
 
 };
 

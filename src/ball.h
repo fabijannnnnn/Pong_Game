@@ -1,24 +1,22 @@
 #ifndef PONG_BALL_H
 #define PONG_BALL_H
 
+#include "raylib.h"
 #include <iostream>
-#include "game.h"
 
 class Ball {
 private:
-    int m_CoordX, m_CoordY;
-    int m_VelocityX, m_VelocityY;
-    float m_Radius;
+    float m_CoordX, m_CoordY, m_VelocityX, m_VelocityY, m_Radius;
 
 public:
-    Ball();
+    Ball(float x, float y);
     ~Ball();
 
-    void Speed(int speedX, int speedY);
+    void Speed(float speedX, float speedY);
 
     void BallRadius(float val);
 
-    void DrawBall();
+    void DrawBall(Color c);
 
 };
 
