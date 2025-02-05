@@ -14,10 +14,10 @@ constexpr Color B_COLOUR = BLACK;
 
 class Game {
 private:
-    bool m_GameOver;
+    bool m_GameStarted;
     int m_RightScore, m_LeftScore;
     std::string m_WinnerNote;
-//    Ball ball;
+    Ball ball;
 //    Racket racket;
 
 public:
