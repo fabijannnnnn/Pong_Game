@@ -4,23 +4,14 @@ Ball::Ball(float x, float y) :
         m_CoordX(x / 2),
         m_CoordY(y/2),
         m_Radius(15.0f),
-        m_VelocityX(500),
-        m_VelocityY(500)
+        m_VelocityX(400),
+        m_VelocityY(400)
 {
     std::cout << "Construction successful\n";
 }
 
 Ball::~Ball() {
     std::cout << "Destruction successful\n";
-}
-
-void Ball::Speed(float speedX, float speedY) {
-    m_VelocityX = speedX;
-    m_VelocityY = speedY;
-}
-
-void Ball::BallRadius(float val) {
-    m_Radius = val;
 }
 
 void Ball::DrawBall(Color c) {
@@ -57,6 +48,18 @@ void Ball::SetSpeedX(float vX) {
 
 void Ball::SetSpeedY(float vY) {
     m_VelocityY = vY;
+}
+
+float Ball::GetRadius() const {
+    return m_Radius;
+}
+
+void Ball::ResetBall(float& winW, float& winH)
+{
+    m_CoordX = (winW / 2);
+    m_CoordY = (winH / 2);
+    m_VelocityX = 0.0f;
+    m_VelocityY = 0.0f;
 }
 
 

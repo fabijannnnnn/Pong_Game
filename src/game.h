@@ -23,17 +23,11 @@ private:
 
 public:
     Game();
-
     ~Game();
 
     void Start();
-
     void Render();
-
     void Update();
-
-//    void Terminate();
-
 };
 
 #endif //PONG_GAME_H

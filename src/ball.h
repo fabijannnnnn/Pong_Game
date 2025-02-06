@@ -24,12 +24,15 @@ public:
     void SetSpeedX(float vX);
     void SetSpeedY(float vY);
 
+    float GetRadius() const;
 
-    void Speed(float speedX, float speedY);
+//    void Speed(float speedX, float speedY);
 
-    void BallRadius(float val);
+//    void BallRadius(float val);
 
     void DrawBall(Color c);
+
+    void ResetBall(float x, float y);
 
 };
 
