@@ -49,27 +49,46 @@ void Game::Render()
 void Game::Update()
 {
     static float fadeAlpha = 1.0f;  // Fully visible at start
-    static float fadeDuration = 2.0f;  // Fade duration in seconds
+    static float fadeDuration = 1.5f;  // Fade duration in seconds
     static float elapsedTime = 0.0f;  // Timer
 
-    if (IsKeyPressed(KEY_SPACE))
+
+    if(!m_GameStarted)
     {
-        m_GameStarted = true;
-        elapsedTime = 0.0f;  // Reset timer when space is pressed
+        int textWidth = MeasureText("Press SPACE to Start", 60);
+//        DrawText("Press SPACE to Start", WIN_WIDTH / 2 - textWidth / 2, WIN_HEIGHT / 2 - 50, 60, B_COLOUR);
+        DrawText("Press SPACE to Start", WIN_WIDTH / 2 - textWidth / 2, WIN_HEIGHT / 2 - 50, 60, Fade(B_COLOUR, fadeAlpha));
+
+        if(IsKeyPressed(KEY_SPACE))
+        {
+            m_GameStarted = true;
+            elapsedTime = 0.0f;
+        }
+    } else
+    {
+        if (fadeAlpha > 0.0f)
+        {
+            elapsedTime += GetFrameTime();
+            fadeAlpha = 1.0f - (elapsedTime / fadeDuration);
+
+            if (fadeAlpha < 0.0f) fadeAlpha = 0.0f;
+
+//            fade overlay
+            DrawRectangle(0, 0, WIN_WIDTH, WIN_HEIGHT, Fade(B_COLOUR, fadeAlpha));
+        }
+        else
+        {
+            DrawText(std::to_string(m_LeftScore).c_str(), (WIN_WIDTH / 2) - 120, (WIN_HEIGHT) - 50, 30, B_COLOUR);
+            DrawText(std::to_string(m_RightScore).c_str(), (WIN_WIDTH / 2) + 100, (WIN_HEIGHT) - 50, 30, B_COLOUR);
+            DrawLine(WIN_WIDTH / 2, 0, WIN_WIDTH / 2, WIN_HEIGHT, B_COLOUR);
+
+            ball.DrawBall(B_COLOUR);
+            rightRacket.DrawRacket(B_COLOUR);
+            leftRacket.DrawRacket(B_COLOUR);
+
+
+        }
     }
-
-// If game has started, begin fade effect
-    if (m_GameStarted && fadeAlpha > 0.0f) {
-        elapsedTime += GetFrameTime();  // Accumulate elapsed time
-        fadeAlpha = 1.0f - (elapsedTime / fadeDuration);  // Normalize fade over time
-
-        // Clamp fadeAlpha to avoid negative values
-        if (fadeAlpha < 0.0f) fadeAlpha = 0.0f;
-
-        // Draw fading black overlay
-        DrawRectangle(0, 0, WIN_WIDTH, WIN_HEIGHT, Fade(BLACK, fadeAlpha));
-    }
-
 
 
 
