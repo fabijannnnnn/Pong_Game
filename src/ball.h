@@ -12,6 +12,19 @@ public:
     Ball(float x, float y);
     ~Ball();
 
+    float GetX() const;
+    float GetY() const;
+
+    void SetX(float x);
+    void SetY(float y);
+
+    float GetSpeedX() const;
+    float GetSpeedY() const;
+
+    void SetSpeedX(float vX);
+    void SetSpeedY(float vY);
+
+
     void Speed(float speedX, float speedY);
 
     void BallRadius(float val);

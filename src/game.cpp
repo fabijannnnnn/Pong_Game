@@ -86,6 +86,12 @@ void Game::Update()
             rightRacket.DrawRacket(B_COLOUR);
             leftRacket.DrawRacket(B_COLOUR);
 
+            ball.SetX(ball.GetX() + ball.GetSpeedX() * GetFrameTime());
+            ball.SetY(ball.GetY() + ball.GetSpeedY() * GetFrameTime());
+
+//           TODO: dokoncit ball movement a racket movement logic
+
+//           TODO2: vytvorit funkciu na ovladanie hry, WS a sipky
 
         }
     }
