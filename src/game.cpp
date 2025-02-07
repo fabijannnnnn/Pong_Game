@@ -1,5 +1,9 @@
 #include "game.h"
 
+float Game::m_FadeAlpha = 1.0f;  // fully visible at start
+float Game::m_FadeDuration = 1.5f;  // fade duration in seconds
+float Game::m_ElapsedTime = 0.0f;  // timer
+
 Game::Game() :
     m_GameStarted(false),
     m_LeftScore(0),
@@ -24,6 +28,20 @@ Game::~Game()
     std::cout << "Destruction successful\n";
 }
 
+void Game::UpdateScore()
+{
+    if(ball.GetX() < 0)
+    {
+        m_RightScore++;
+        ball.ResetBall(WIN_WIDTH, WIN_HEIGHT, 400, 400);
+    }
+    else if(ball.GetX() > WIN_WIDTH)
+    {
+        m_LeftScore++;
+        ball.ResetBall(WIN_WIDTH,WIN_HEIGHT, -400, 400);
+    }
+}
+
 void Game::Start()
 {
     while(!WindowShouldClose())
@@ -40,111 +58,99 @@ void Game::Start()
 void Game::Render()
 {
     ClearBackground(W_COLOUR);
-
-
-
     DrawFPS(10, 10);
+}
+
+void Game::StartMessage()
+{
+    DrawText("Press SPACE to Start", WIN_W_HALF - TXT_W_START, WIN_H_HALF - 50, TXT_S_MAIN, Fade(B_COLOUR, m_FadeAlpha));
+    if(IsKeyPressed(KEY_SPACE))
+    {
+        m_GameStarted = true;
+        m_ElapsedTime = 0.0f;
+    }
 }
 
 void Game::Update()
 {
-    static float fadeAlpha = 1.0f;  // Fully visible at start
-    static float fadeDuration = 1.5f;  // Fade duration in seconds
-    static float elapsedTime = 0.0f;  // Timer
-
+    float deltaTime = GetFrameTime();
 
     if(!m_GameStarted)
     {
-        int textWidth = MeasureText("Press SPACE to Start", 60);
-//        DrawText("Press SPACE to Start", WIN_WIDTH / 2 - textWidth / 2, WIN_HEIGHT / 2 - 50, 60, B_COLOUR);
-        DrawText("Press SPACE to Start", WIN_WIDTH/2 - textWidth/2, WIN_HEIGHT/2 - 50, 60, Fade(B_COLOUR, fadeAlpha));
-
-        if(IsKeyPressed(KEY_SPACE))
-        {
-            m_GameStarted = true;
-            elapsedTime = 0.0f;
-        }
+        StartMessage();
     } else
     {
-        if (fadeAlpha > 0.0f)
+        if (m_FadeAlpha > 0.0f)
         {
-            elapsedTime += GetFrameTime();
-            fadeAlpha = 1.0f - (elapsedTime / fadeDuration);
+            m_ElapsedTime += deltaTime;
+            m_FadeAlpha = 1.0f - (m_ElapsedTime/m_FadeDuration);
 
-            if (fadeAlpha < 0.0f) fadeAlpha = 0.0f;
+            if (m_FadeAlpha < 0.0f) m_FadeAlpha = 0.0f;
 
 //            fade effect of the rectangle
-            DrawRectangle(0, 0, WIN_WIDTH, WIN_HEIGHT, Fade(B_COLOUR, fadeAlpha));
+            DrawRectangle(0, 0, WIN_WIDTH, WIN_HEIGHT, Fade(B_COLOUR, m_FadeAlpha));
         }
         else
         {
 //            TODO: dokoncit ball movement a racket movement logic
 
 //            draws the text
-            DrawText(std::to_string(m_LeftScore).c_str(), WIN_WIDTH/2 - 120, WIN_HEIGHT - 50, 30, B_COLOUR);
-            DrawText(std::to_string(m_RightScore).c_str(), WIN_WIDTH/2 + 100, WIN_HEIGHT - 50, 30, B_COLOUR);
-            DrawLine(WIN_WIDTH/2, 0, WIN_WIDTH/2, WIN_HEIGHT, B_COLOUR);
+            DrawText(std::to_string(m_LeftScore).c_str(), WIN_W_HALF - 120, WIN_HEIGHT - 50, TXT_S_SIDE, B_COLOUR);
+            DrawText(std::to_string(m_RightScore).c_str(), WIN_W_HALF + 100, WIN_HEIGHT - 50, TXT_S_SIDE, B_COLOUR);
+            DrawLine(WIN_W_HALF, 0, WIN_W_HALF, WIN_HEIGHT, B_COLOUR);
 
 //            draws the necessary tools for the game
             ball.DrawBall(B_COLOUR);
             rightRacket.DrawRacket(B_COLOUR);
             leftRacket.DrawRacket(B_COLOUR);
 
-//            sets the direction of the ball
+
 //            TODO: randomizing the ball spawn direction
-            ball.SetX(ball.GetX() + ball.GetSpeedX() * GetFrameTime());
-            ball.SetY(ball.GetY() + ball.GetSpeedY() * GetFrameTime());
+//            sets the direction of the ball
+            ball.SetX(ball.GetX() + ball.GetSpeedX() * deltaTime);
+//            ball.SetY(ball.GetY() + ball.GetSpeedY() * deltaTime);
+
 
 //            ball top and bottom collision detection
-            if(ball.GetY() < 0)
+            if(ball.GetY() < 0 || ball.GetY() > WIN_HEIGHT)
             {
-                ball.SetY(0);
-                ball.SetSpeedY(ball.GetSpeedY() * -1); // reversing vertical speed
+                if(ball.GetY() < 0)
+                {
+                    ball.SetY(0);
+                    ball.SetSpeedY(ball.GetSpeedY() * -1); // reversing vertical speed
+                } else
+                {
+                    ball.SetY(WIN_HEIGHT);
+                    ball.SetSpeedY(ball.GetSpeedY() * -1); // reversing vertical speed
+                }
             }
-            if(ball.GetY() > WIN_HEIGHT)
-            {
-                ball.SetY(WIN_HEIGHT);
-                ball.SetSpeedY(ball.GetSpeedY() * -1); // reversing vertical speed
-            }
+
 
 //            check for collision between the ball and the left and right racket
-            if(CheckCollisionCircleRec(Vector2{ball.GetX(), ball.GetY()}, ball.GetRadius(), leftRacket.GetRect()))
+            if (ball.GetX() < 60 || ball.GetX() > WIN_WIDTH - 60)
             {
-                if(ball.GetSpeedX() < 0)
+                if (CheckCollisionCircleRec(Vector2{ball.GetX(), ball.GetY()}, ball.GetRadius(), leftRacket.GetRect()))
                 {
-                    ball.SetSpeedX(ball.GetSpeedX() * -1);
+                    ball.UpdateSpeed(550, 550);
                 }
-            }
-
-            if(CheckCollisionCircleRec(Vector2{ball.GetX(), ball.GetY()}, ball.GetRadius(), rightRacket.GetRect()))
-            {
-                if(ball.GetSpeedX() > 0)
+                else if (CheckCollisionCircleRec(Vector2{ball.GetX(), ball.GetY()}, ball.GetRadius(), rightRacket.GetRect()))
                 {
-                    ball.SetSpeedX(ball.GetSpeedX() * -1);
+                    ball.UpdateSpeed(-550, -550);
                 }
+                else UpdateScore();
             }
 
-//            score logic
-            if(ball.GetX() < 0)
-            {
-                m_LeftScore++;
-            }
-
-            if(ball.GetX() > WIN_WIDTH)
-            {
-                m_RightScore++;
-            }
 
             if(m_LeftScore == 10 || m_RightScore == 10)
             {
-                int textWidth = MeasureText("L / R player has won", 50);
                 if(m_LeftScore == 10)
                 {
-                    DrawText("Left player has won", WIN_WIDTH/2 - textWidth/2, WIN_HEIGHT/2 - 50, 60, B_COLOUR);
+                    DrawText("Left player has won", WIN_W_HALF - TXT_W_VICTORY, WIN_H_HALF - 50, TXT_S_MAIN, B_COLOUR);
 //                    m_GameStarted = false;
-                } else
+                }
+                else
                 {
-                    DrawText("Right player has won", WIN_WIDTH/2 - textWidth/2, WIN_HEIGHT/2 - 50, 60, B_COLOUR);
+                    DrawText("Right player has won", WIN_W_HALF - TXT_W_VICTORY, WIN_H_HALF - 50, TXT_S_MAIN, B_COLOUR);
 //                    m_GameStarted = false;
                 }
             }
@@ -156,37 +162,3 @@ void Game::Update()
 }
 
 //           TODO: vytvorit funkciu na ovladanie hry, W,S a sipky
-
-
-
-
-//    static float fadeAlpha = 1.0f; // fade variable for the transition
-//
-//    if(!m_GameStarted)
-//    {
-//        int textWidth = MeasureText("Press SPACE to Start", 60);
-////        DrawText("Press SPACE to Start", WIN_WIDTH / 2 - textWidth / 2, WIN_HEIGHT / 2 - 50, 60, B_COLOUR);
-//        DrawText("Press SPACE to Start", WIN_WIDTH / 2 - textWidth / 2, WIN_HEIGHT / 2 - 50, 60, Fade(B_COLOUR, fadeAlpha));
-//
-//        if(IsKeyPressed(KEY_SPACE))
-//        {
-//            m_GameStarted = true;
-//        }
-//    } else
-//    {
-//        if(fadeAlpha > 0.0f)
-//        {
-//            fadeAlpha -= 0.01f;
-//        } else {
-//
-//            DrawText(std::to_string(m_LeftScore).c_str(), (WIN_WIDTH / 2) - 120, (WIN_HEIGHT) - 50, 30, B_COLOUR);
-//            DrawText(std::to_string(m_RightScore).c_str(), (WIN_WIDTH / 2) + 100, (WIN_HEIGHT) - 50, 30, B_COLOUR);
-//            DrawLine(WIN_WIDTH / 2, 0, WIN_WIDTH / 2, WIN_HEIGHT, B_COLOUR);
-//
-//            ball.DrawBall(B_COLOUR);
-//            rightRacket.DrawRacket(B_COLOUR);
-//            leftRacket.DrawRacket(B_COLOUR);
-//        }
-//    }
-
-

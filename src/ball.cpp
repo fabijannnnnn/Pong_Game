@@ -54,12 +54,16 @@ float Ball::GetRadius() const {
     return m_Radius;
 }
 
-void Ball::ResetBall(float& winW, float& winH)
+void Ball::ResetBall(float winW, float winH, float velX, float velY)
 {
     m_CoordX = (winW / 2);
     m_CoordY = (winH / 2);
-    m_VelocityX = 0.0f;
-    m_VelocityY = 0.0f;
+    m_VelocityX = velX;
+    m_VelocityY = velY;
 }
 
-
+void Ball::UpdateSpeed(float velX, float velY)
+{
+    m_VelocityX = velX;
+    m_VelocityY = velY;
+}

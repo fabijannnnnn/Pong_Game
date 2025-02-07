@@ -32,7 +32,9 @@ public:
 
     void DrawBall(Color c);
 
-    void ResetBall(float x, float y);
+    void ResetBall(float x, float y, float vX, float v);
+
+    void UpdateSpeed(float velX, float velY);
 
 };
 
