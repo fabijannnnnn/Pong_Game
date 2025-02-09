@@ -11,7 +11,7 @@ private:
 
 public:
     explicit Racket();
-//     constructor made explicit due to prevention of unwanted accidental conversions
+//     constructor made explicit in order to prevent of unwanted accidental conversions
     ~Racket();
 
     void Position(float x, float y);

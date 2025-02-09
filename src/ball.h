@@ -2,7 +2,6 @@
 #define PONG_BALL_H
 
 #include "raylib.h"
-#include <iostream>
 
 class Ball {
 private:

@@ -5,7 +5,7 @@ float Game::m_FadeDuration = 1.5f;  // fade duration in seconds
 float Game::m_ElapsedTime = 0.0f;  // timer
 
 Game::Game() :
-    m_GameStarted(false),
+    m_GameState(GameState::Intro),
     m_LeftScore(0),
     m_RightScore(0),
     m_WinnerNote("Draw"),
@@ -13,11 +13,11 @@ Game::Game() :
     rightRacket(),
     leftRacket()
 {
-    InitWindow(WIN_WIDTH, WIN_HEIGHT, WIN_NAME);
+    InitWindow(WIN_WIDTH, WIN_HEIGHT, WIN_NAME.data()); // possible use of .cstr(), also ends as null terminated
     SetTargetFPS(FPS);
 
-    leftRacket.Position(40, float(WIN_HEIGHT) / 2);
-    rightRacket.Position(WIN_WIDTH - 40, float(WIN_HEIGHT) / 2);
+    leftRacket.Position(40, float(WIN_H_HALF));
+    rightRacket.Position(WIN_WIDTH - 40, float(WIN_H_HALF));
 
     std::cout << "Construction successful\n";
 }
@@ -26,6 +26,17 @@ Game::~Game()
 {
     CloseWindow();
     std::cout << "Destruction successful\n";
+}
+
+void Game::Start()
+{
+    while(!WindowShouldClose())
+    {
+        BeginDrawing();
+        Render();
+        Update();
+        EndDrawing();
+    }
 }
 
 void Game::UpdateScore()
@@ -42,23 +53,22 @@ void Game::UpdateScore()
     }
 }
 
-void Game::Start()
+void Game::ResetGame()
 {
-    while(!WindowShouldClose())
-    {
-        BeginDrawing();
-
-        Render();
-        Update();
-
-        EndDrawing();
-    }
+    m_LeftScore = 0;
+    m_RightScore = 0;
+    m_GameState = GameState::Intro;
+    ball.ResetBall(WIN_WIDTH, WIN_HEIGHT, 400, 400);
 }
 
 void Game::Render()
 {
     ClearBackground(W_COLOUR);
     DrawFPS(10, 10);
+    if(m_GameState == GameState::Intro)
+    {
+
+    }
 }
 
 void Game::StartMessage()
@@ -66,7 +76,7 @@ void Game::StartMessage()
     DrawText("Press SPACE to Start", WIN_W_HALF - TXT_W_START, WIN_H_HALF - 50, TXT_S_MAIN, Fade(B_COLOUR, m_FadeAlpha));
     if(IsKeyPressed(KEY_SPACE))
     {
-        m_GameStarted = true;
+        m_GameState = GameState::Playing;
         m_ElapsedTime = 0.0f;
     }
 }
@@ -75,7 +85,7 @@ void Game::Update()
 {
     float deltaTime = GetFrameTime();
 
-    if(!m_GameStarted)
+    if(m_GameState == GameState::Intro)
     {
         StartMessage();
     } else
