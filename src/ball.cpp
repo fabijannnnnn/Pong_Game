@@ -3,8 +3,8 @@
 Ball::Ball(float x, float y) :
         m_CoordX(x),
         m_CoordY(y),
-        m_VelocityX(300),
-        m_VelocityY(300)
+        m_VelocityX(SPEED_SLOW),
+        m_VelocityY(SPEED_SLOW)
 {
 //    std::cout << "Construction successful\n";
 }
@@ -49,12 +49,12 @@ void Ball::SetSpeedY(float vY) {
     m_VelocityY = vY;
 }
 
-void Ball::ResetBall(float winW, float winH)
+void Ball::ResetBall()
 {
-    m_CoordX = winW;
-    m_CoordY = winH;
-    m_VelocityX = 300.0f;
-    m_VelocityY = 300.0f;
+    m_CoordX = WIN_W_HALF;
+    m_CoordY = WIN_H_HALF;
+    m_VelocityX = SPEED_SLOW;
+    m_VelocityY = SPEED_SLOW;
 }
 
 void Ball::UpdateSpeed(float velX, float velY)

@@ -1,5 +1,4 @@
 #include "game.h"
-#include <iostream>
 
 float Game::m_FadeAlpha = 1.0f;  // fully visible at start
 float Game::m_FadeDuration = 2.0f;  // fade duration in seconds
@@ -14,11 +13,11 @@ Game::Game() :
     rightRacket(),
     leftRacket()
 {
-    InitWindow(WIN_WIDTH, WIN_HEIGHT, WIN_NAME.data()); // possible use of .cstr(), also ends as null terminated
+    InitWindow(WIN_WIDTH, WIN_HEIGHT, "PONG"); // possible use of .cstr(), also ends as null terminated
     SetTargetFPS(FPS);
 
-    leftRacket.Position(40, float(WIN_H_HALF));
-    rightRacket.Position(WIN_WIDTH - 40, float(WIN_H_HALF));
+    leftRacket.Position(40, WIN_H_HALF);
+    rightRacket.Position(WIN_WIDTH - 40, WIN_H_HALF);
 
     std::cout << "Construction successful\n";
 }
@@ -45,12 +44,12 @@ void Game::UpdateScore()
     if(ball.GetX() < 0)
     {
         m_RightScore++;
-        ball.ResetBall(WIN_W_HALF, WIN_H_HALF);
+        ball.ResetBall();
     }
     else if(ball.GetX() > WIN_WIDTH)
     {
         m_LeftScore++;
-        ball.ResetBall(WIN_W_HALF, WIN_H_HALF);
+        ball.ResetBall();
     }
 }
 
@@ -59,7 +58,7 @@ void Game::ResetGame()
     m_LeftScore = 0;
     m_RightScore = 0;
     m_GameState = GameState::Intro;
-    ball.ResetBall(WIN_W_HALF, WIN_H_HALF);
+    ball.ResetBall();
 }
 
 void Game::StartMessage()
@@ -73,35 +72,35 @@ void Game::StartMessage()
 
 void Game::Render()
 {
-    ClearBackground(W_COLOUR);
+    ClearBackground(COLOUR_W);
     DrawFPS(10, 10);
 
     if(m_GameState == GameState::Intro)
     {
-        DrawText("Press SPACE to Start", WIN_W_HALF - TXT_W_START, WIN_H_HALF - 50, TXT_S_MAIN, Fade(B_COLOUR, m_FadeAlpha));
+        DrawText("Press SPACE to Start", WIN_W_HALF - TXT_W_START, WIN_H_HALF - 50, TXT_S_MAIN, Fade(COLOUR_B, m_FadeAlpha));
     }
     else if(m_GameState == GameState::Playing)
     {
         if (m_FadeAlpha > 0.0f)
         {
 //            rectangle for the fade effect
-            DrawRectangle(0, 0, WIN_WIDTH, WIN_HEIGHT, Fade(B_COLOUR, m_FadeAlpha));
+            DrawRectangle(0, 0, WIN_WIDTH, WIN_HEIGHT, Fade(COLOUR_B, m_FadeAlpha));
         }
         else
         {
-        DrawText(std::to_string(m_LeftScore).data(), WIN_W_HALF - 120, WIN_HEIGHT - 50, TXT_S_SIDE, B_COLOUR);
-        DrawText(std::to_string(m_RightScore).data(), WIN_W_HALF + 100, WIN_HEIGHT - 50, TXT_S_SIDE, B_COLOUR);
-        DrawLine(WIN_W_HALF, 0, WIN_W_HALF, WIN_HEIGHT, B_COLOUR);
+        DrawText(std::to_string(m_LeftScore).data(), TXT_SCORE_L, WIN_HEIGHT - 50, TXT_S_SIDE, COLOUR_B);
+        DrawText(std::to_string(m_RightScore).data(), TXT_SCORE_R, WIN_HEIGHT - 50, TXT_S_SIDE, COLOUR_B);
+        DrawLine(WIN_W_HALF, 0, WIN_W_HALF, WIN_HEIGHT, COLOUR_B);
 
-        ball.DrawBall(B_COLOUR);
-        rightRacket.DrawRacket(B_COLOUR);
-        leftRacket.DrawRacket(B_COLOUR);
+        ball.DrawBall(COLOUR_B);
+        rightRacket.DrawRacket(COLOUR_B);
+        leftRacket.DrawRacket(COLOUR_B);
         }
     }
     else if(m_GameState == GameState::GameOver)
     {
-        DrawText(m_WinnerNote.data(), WIN_W_HALF - TXT_W_VICTORY, WIN_H_HALF - 40, TXT_S_MAIN, B_COLOUR);
-        DrawText("Press SPACE to restart", WIN_W_HALF - TXT_W_VICTORY, WIN_H_HALF - 100, TXT_S_SIDE, Fade(B_COLOUR, m_FadeAlpha));
+        DrawText(m_WinnerNote.data(), WIN_W_HALF - TXT_W_VICTORY, WIN_H_HALF - 40, TXT_S_MAIN, COLOUR_B);
+        DrawText("Press SPACE to restart", WIN_W_HALF - TXT_W_VICTORY, WIN_H_HALF - 100, TXT_S_SIDE, Fade(COLOUR_B, m_FadeAlpha));
     }
 }
 
@@ -129,26 +128,24 @@ void Game::Update()
 
 //        sets the direction of the ball
             ball.SetX(ball.GetX() + ball.GetSpeedX() * deltaTime);
-//        ball.SetY(ball.GetY() + ball.GetSpeedY() * deltaTime);
-            std::cout << ball.GetSpeedX() << "    " << ball.GetSpeedY() << std::endl;
+            ball.SetY(ball.GetY() + ball.GetSpeedY() * deltaTime);
 
 
 //        ball top and bottom collision detection
             if (ball.GetY() < 0 || ball.GetY() > WIN_HEIGHT) {
                 ball.SetY(ball.GetY() < 0 ? 0 : WIN_HEIGHT);
-                ball.SetSpeedY(-ball.GetY());
+                ball.SetSpeedY(-ball.GetSpeedY());
             }
 
 //        check for collision between the ball and the left and right racket
-            if (ball.GetX() < 60 || ball.GetX() > WIN_WIDTH - 60) {
+            if (ball.GetX() < 65 || ball.GetX() > WIN_WIDTH - 65) {
                 if (CheckCollisionCircleRec(Vector2{ball.GetX(), ball.GetY()}, BALL_RADIUS, leftRacket.GetRect())) {
-//                ball.SetSpeedX(-ball.GetSpeedX());
-                    ball.UpdateSpeed(550, 550);
-                } else if (CheckCollisionCircleRec(Vector2{ball.GetX(), ball.GetY()}, BALL_RADIUS,
-                                                   rightRacket.GetRect())) {
-                    ball.UpdateSpeed(-550, -550);
-//                ball.SetSpeedX(-ball.GetSpeedX());
-                } else UpdateScore();
+                    ball.UpdateSpeed(SPEED_FAST, SPEED_FAST);
+                }
+                else if (CheckCollisionCircleRec(Vector2{ball.GetX(), ball.GetY()}, BALL_RADIUS,rightRacket.GetRect())) {
+                    ball.UpdateSpeed(-SPEED_FAST, -SPEED_FAST);
+                }
+                else UpdateScore();
             }
 
             if (m_LeftScore == 10 || m_RightScore == 10) {

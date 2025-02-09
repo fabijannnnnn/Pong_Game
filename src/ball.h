@@ -24,14 +24,9 @@ public:
     void SetSpeedX(float vX);
     void SetSpeedY(float vY);
 
-//    float GetRadius() const;
-
     void DrawBall(Color c) const;
-
-    void ResetBall(float winW, float winH);
-
     void UpdateSpeed(float velX, float velY);
-
+    void ResetBall();
 };
 
 #endif //PONG_BALL_H
