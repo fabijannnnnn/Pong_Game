@@ -14,6 +14,7 @@ constexpr uint16_t TXT_S_SIDE = 30;
 constexpr uint16_t TXT_W_START = 350; // cca 700
 constexpr uint16_t TXT_W_VICTORY = 270; // cca 550/2
 constexpr uint16_t FPS = 60;
+constexpr float BALL_RADIUS = 15.0f;
 constexpr std::string_view WIN_NAME = "PONG";
 constexpr Color W_COLOUR = RAYWHITE;
 constexpr Color B_COLOUR = BLACK;

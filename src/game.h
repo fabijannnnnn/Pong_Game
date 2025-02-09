@@ -3,7 +3,6 @@
 
 #include "ball.h"
 #include "racket.h"
-#include "settings.h"
 
 class Game {
 

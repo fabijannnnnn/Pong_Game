@@ -1,21 +1,20 @@
 #include "ball.h"
 
 Ball::Ball(float x, float y) :
-        m_CoordX(x / 2),
-        m_CoordY(y/2),
-        m_Radius(15.0f),
-        m_VelocityX(400),
-        m_VelocityY(400)
+        m_CoordX(x),
+        m_CoordY(y),
+        m_VelocityX(300),
+        m_VelocityY(300)
 {
-    std::cout << "Construction successful\n";
+//    std::cout << "Construction successful\n";
 }
 
 Ball::~Ball() {
-    std::cout << "Destruction successful\n";
+//    std::cout << "Destruction successful\n";
 }
 
-void Ball::DrawBall(Color c) {
-    DrawCircle(int(m_CoordX), int(m_CoordY), m_Radius, c);
+void Ball::DrawBall(Color c) const {
+    DrawCircle(int(m_CoordX), int(m_CoordY), BALL_RADIUS, c);
 }
 
 float Ball::GetX() const {
@@ -50,16 +49,12 @@ void Ball::SetSpeedY(float vY) {
     m_VelocityY = vY;
 }
 
-float Ball::GetRadius() const {
-    return m_Radius;
-}
-
-void Ball::ResetBall(float winW, float winH, float velX, float velY)
+void Ball::ResetBall(float winW, float winH)
 {
-    m_CoordX = (winW / 2);
-    m_CoordY = (winH / 2);
-    m_VelocityX = velX;
-    m_VelocityY = velY;
+    m_CoordX = winW;
+    m_CoordY = winH;
+    m_VelocityX = 300.0f;
+    m_VelocityY = 300.0f;
 }
 
 void Ball::UpdateSpeed(float velX, float velY)
