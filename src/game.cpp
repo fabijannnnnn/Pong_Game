@@ -10,14 +10,11 @@ Game::Game() :
     m_RightScore(0),
     m_WinnerNote("Draw"),
     ball(WIN_W_HALF, WIN_H_HALF),
-    rightRacket(),
-    leftRacket()
+    rightRacket(RAC_POS_L),
+    leftRacket(RAC_POS_R)
 {
     InitWindow(WIN_WIDTH, WIN_HEIGHT, "PONG"); // possible use of .cstr(), also ends as null terminated
     SetTargetFPS(FPS);
-
-    leftRacket.Position(40, WIN_H_HALF);
-    rightRacket.Position(WIN_WIDTH - 40, WIN_H_HALF);
 
     std::cout << "Construction successful\n";
 }
@@ -165,4 +162,15 @@ void Game::Update()
 
 }
 
-//           TODO: vytvorit funkciu na ovladanie hry, W,S a sipky
+void Game::HandleInput()
+{
+    if(IsKeyDown(KEY_W))
+    {
+        if(leftRacket.GetY() > 50)
+        {
+            leftRacket.SetY(leftRacket.GetY() - leftRacket.)
+        }
+
+    }
+
+}

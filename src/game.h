@@ -21,6 +21,7 @@ public:
     void Start();
     void Render();
     void Update();
+    void HandleInput();
     void UpdateScore();
     void StartMessage();
     void ResetGame();

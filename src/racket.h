@@ -1,16 +1,16 @@
 #ifndef PONG_RACKET_H
 #define PONG_RACKET_H
 
-#include "raylib.h"
-#include <string>
+#include "settings.h"
+#include "ball.h"
 
-class Racket {
+class Racket : public Ball{
+
 private:
     float m_CoordX, m_CoordY, m_Speed, m_Width, m_Height;
-    uint16_t m_Score;
 
 public:
-    explicit Racket();
+    explicit Racket(float x);
 //     constructor made explicit in order to prevent of unwanted accidental conversions
     ~Racket();
 
@@ -20,7 +20,13 @@ public:
 
     Rectangle GetRect();
 
-    uint16_t AddScore();
+    float GetY() const;
+
+    void SetY(float y);
+
+    void
+
+
 };
 
 

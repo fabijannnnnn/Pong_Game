@@ -22,6 +22,12 @@ constexpr uint16_t TXT_SCORE_R = WIN_W_HALF + 100;
 constexpr float SPEED_SLOW = 400;
 constexpr float SPEED_FAST = 550;
 constexpr float BALL_RADIUS = 15.0f;
+// ---racket settings---
+constexpr float RAC_WIDTH = 20;
+constexpr float RAC_HEIGHT = 120;
+constexpr float RAC_POS_L = 40;
+constexpr float RAC_POS_R = 760; // cca WIN_W - 40
+constexpr float RAC_POS_Y = 0;
 // ---colours---
 constexpr Color COLOUR_W = RAYWHITE;
 constexpr Color COLOUR_B = BLACK;

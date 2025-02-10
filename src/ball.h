@@ -5,6 +5,7 @@
 #include "settings.h"
 
 class Ball {
+
 private:
     float m_CoordX, m_CoordY, m_VelocityX, m_VelocityY;
 

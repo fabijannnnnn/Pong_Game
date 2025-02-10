@@ -1,13 +1,11 @@
 #include "racket.h"
-#include <iostream>
 
-Racket::Racket() :
-    m_Height(120),
-    m_Width(20),
-    m_Speed(500),
-    m_Score(0),
-    m_CoordX(0),
-    m_CoordY(0)
+Racket::Racket(float x) :
+    m_Height(RAC_HEIGHT),
+    m_Width(RAC_WIDTH),
+    m_Speed(SPEED_FAST),
+    m_CoordX(x),
+    m_CoordY(RAC_POS_Y)
 {
     std::cout << "Racket constructed successfully\n";
 }
@@ -15,6 +13,16 @@ Racket::Racket() :
 Racket::~Racket()
 {
     std::cout << "Racket destructed successfully\n";
+}
+
+float Racket::GetY() const
+{
+    return m_CoordY;
+}
+
+void Racket::SetY(float y)
+{
+    m_CoordY = y;
 }
 
 void Racket::Position(float x, float y)
@@ -33,8 +41,4 @@ void Racket::DrawRacket(Color c)
     DrawRectangleRec(GetRect(), c);
 }
 
-uint16_t Racket::AddScore()
-{
-    m_Score++;
-    return m_Score;
-}
+
