@@ -9,13 +9,12 @@ private:
     float m_Width, m_Height;
 
 public:
-    Racket(float posX, float posY, float vX, float vY);
+    Racket(float posX, float vY);
     ~Racket();
 
     void DrawRacket(Color c);
     void ResetRacket(float posY);
     Rectangle GetRect();
-
 };
 
 

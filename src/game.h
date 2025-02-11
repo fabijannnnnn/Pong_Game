@@ -7,9 +7,11 @@ class Game {
 
 private:
     GameState m_GameState;
-    static float m_FadeAlpha, m_FadeDuration, m_ElapsedTime;
-    uint16_t m_RightScore, m_LeftScore;
     std::string m_WinnerNote;
+    uint16_t m_RightScore, m_LeftScore;
+
+    static float m_FadeAlpha, m_FadeDuration, m_ElapsedTime;
+
     Ball ball;
     Racket leftRacket, rightRacket;
 
@@ -21,14 +23,14 @@ public:
     void Render();
     void Update(float deltaTime);
     void HandleInput(float deltaTime);
-    void UpdateScore();
-    void StartMessage();
-    void ResetGame();
 
-    void CheckPaddleCollision();
+    void ResetGame();
+    void StartMessage();
     void CheckGameOver();
-    void CheckWallCollision();
-    void MoveBall(float deltaTime);
+
+    void UpdateScore();
+    void CheckRacketCollision();
+
     static void UpdateFadeEffect(float deltaTime);
 };
 

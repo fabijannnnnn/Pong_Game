@@ -1,18 +1,14 @@
 #include "racket.h"
 
-Racket::Racket(float x, float y, float vX, float vY) :
-    Ball(x, y, vX, vY),
+Racket::Racket(float x, float vY) :
+    Ball(x, WIN_H_HALF, 0, vY),
     m_Height(RAC_HEIGHT),
     m_Width(RAC_WIDTH)
 {
-    m_VelocityY = SPEED_FAST;
-    std::cout << "Racket constructed successfully\n";
+    m_SpeedY = SPEED_FAST;
 }
 
-Racket::~Racket()
-{
-    std::cout << "Racket destructed successfully\n";
-}
+Racket::~Racket() = default;
 
 void Racket::DrawRacket(Color c)
 {
@@ -26,7 +22,6 @@ void Racket::ResetRacket(float y)
 
 Rectangle Racket::GetRect()
 {
+//    changes the centre of the rectangle to the middle
     return Rectangle{m_CoordX - m_Width / 2, m_CoordY - m_Height / 2, m_Width, m_Height};
 }
-
-

@@ -6,27 +6,31 @@
 class Ball {
 
 protected:
-    float m_CoordX, m_CoordY, m_VelocityX, m_VelocityY;
+    float m_CoordX, m_CoordY, m_SpeedX, m_SpeedY;
 
 public:
-    Ball(float x, float y, float vX, float vY);
+    Ball(float coordX, float coordY, float speedX, float speedY);
     ~Ball();
 
     float GetX() const;
     float GetY() const;
 
-    void SetX(float x);
-    void SetY(float y);
+    void SetX(float coordX);
+    void SetY(float coordY);
 
     float GetSpeedX() const;
     float GetSpeedY() const;
 
-    void SetSpeedX(float vX);
-    void SetSpeedY(float vY);
+    void SetSpeedX(float speedX);
+    void SetSpeedY(float speedY);
+
+    void UpdateSpeed();
 
     void DrawBall(Color c, float bRadius) const;
-//    void UpdateSpeed(float velX, float velY);
-    void ResetBall(float velX, float velY);
+    void ResetBall(float speedX, float speedY);
+    void MoveBall(float deltaTime);
+
+    void CheckWallCollision();
 };
 
 #endif //PONG_BALL_H
