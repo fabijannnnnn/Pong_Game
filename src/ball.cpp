@@ -1,20 +1,21 @@
 #include "ball.h"
 
-Ball::Ball(float x, float y) :
+Ball::Ball(float x, float y, float vX, float vY) :
         m_CoordX(x),
         m_CoordY(y),
-        m_VelocityX(SPEED_SLOW),
-        m_VelocityY(SPEED_SLOW)
+        m_VelocityX(vX),
+        m_VelocityY(vY)
 {
-//    std::cout << "Construction successful\n";
+//    std::cout << "Ball construction successful\n";
 }
 
-Ball::~Ball() {
-//    std::cout << "Destruction successful\n";
+Ball::~Ball()
+{
+//    std::cout << "Ball destruction successful\n";
 }
 
-void Ball::DrawBall(Color c) const {
-    DrawCircle(int(m_CoordX), int(m_CoordY), BALL_RADIUS, c);
+void Ball::DrawBall(Color c, float bR) const {
+    DrawCircle(int(m_CoordX), int(m_CoordY), bR, c);
 }
 
 float Ball::GetX() const {
@@ -49,16 +50,16 @@ void Ball::SetSpeedY(float vY) {
     m_VelocityY = vY;
 }
 
-void Ball::ResetBall()
+void Ball::ResetBall(float vX, float vY)
 {
     m_CoordX = WIN_W_HALF;
     m_CoordY = WIN_H_HALF;
-    m_VelocityX = SPEED_SLOW;
-    m_VelocityY = SPEED_SLOW;
+    m_VelocityX = vX;
+    m_VelocityY = vY;
 }
 
-void Ball::UpdateSpeed(float velX, float velY)
-{
-    m_VelocityX = velX;
-    m_VelocityY = velY;
-}
+//void Ball::UpdateSpeed(float velX, float velY)
+//{
+//    m_VelocityX = velX;
+//    m_VelocityY = velY;
+//}

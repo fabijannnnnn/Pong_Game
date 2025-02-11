@@ -1,16 +1,15 @@
 #ifndef PONG_BALL_H
 #define PONG_BALL_H
 
-#include "raylib.h"
 #include "settings.h"
 
 class Ball {
 
-private:
+protected:
     float m_CoordX, m_CoordY, m_VelocityX, m_VelocityY;
 
 public:
-    Ball(float x, float y);
+    Ball(float x, float y, float vX, float vY);
     ~Ball();
 
     float GetX() const;
@@ -25,9 +24,9 @@ public:
     void SetSpeedX(float vX);
     void SetSpeedY(float vY);
 
-    void DrawBall(Color c) const;
-    void UpdateSpeed(float velX, float velY);
-    void ResetBall();
+    void DrawBall(Color c, float bRadius) const;
+//    void UpdateSpeed(float velX, float velY);
+    void ResetBall(float velX, float velY);
 };
 
 #endif //PONG_BALL_H

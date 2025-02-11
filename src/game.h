@@ -1,7 +1,6 @@
 #ifndef PONG_GAME_H
 #define PONG_GAME_H
 
-#include "ball.h"
 #include "racket.h"
 
 class Game {
@@ -20,11 +19,17 @@ public:
 
     void Start();
     void Render();
-    void Update();
-    void HandleInput();
+    void Update(float deltaTime);
+    void HandleInput(float deltaTime);
     void UpdateScore();
     void StartMessage();
     void ResetGame();
+
+    void CheckPaddleCollision();
+    void CheckGameOver();
+    void CheckWallCollision();
+    void MoveBall(float deltaTime);
+    static void UpdateFadeEffect(float deltaTime);
 };
 
 #endif //PONG_GAME_H
