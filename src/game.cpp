@@ -160,7 +160,6 @@ void Game::CheckWallCollision()
     }
 }
 
-//TODO: REPAIR THIS LOGIC SO IT COLLIDES WITH THE TOP AND THE BOTTOM AND CHANGES TRAJECTORY ACCORDINGLY
 void Game::CheckPaddleCollision()
 {
     if (ball.GetX() < 60 && ball.GetX() > WIN_WIDTH - 60) return;
@@ -178,9 +177,10 @@ void Game::CheckPaddleCollision()
         {
             ball.SetSpeedX(-ball.GetSpeedX());
         }
-    } else
+    }
+    else
     {
-        UpdateScore(); // If no collision, update score
+        UpdateScore();
     }
 }
 
@@ -225,78 +225,3 @@ void Game::HandleInput(float dT)
     }
 
 }
-
-//void Game::Update(float dT)
-//{
-//    // delta time refers to the time passed between the current and previous frame
-//    float deltaTime = dT;
-//
-//    if(m_GameState == GameState::Intro)
-//    {
-//        StartMessage();
-//    }
-//    else if(m_GameState == GameState::Playing)
-//    {
-////        fade alpha is the opacity of the fade
-//        if (m_FadeAlpha > 0.0f)
-//        {
-//            m_ElapsedTime += deltaTime;
-//            m_FadeAlpha = 1.0f - (m_ElapsedTime/m_FadeDuration);
-//            return;
-//        }
-////        else
-////        {
-////        calculates the direction of the ball
-//            ball.SetX(ball.GetX() + ball.GetSpeedX() * deltaTime);
-//            ball.SetY(ball.GetY() + ball.GetSpeedY() * deltaTime);
-//
-//
-////        ball top and bottom collision detection
-//            if (ball.GetY() < 0 || ball.GetY() > WIN_HEIGHT) {
-//                ball.SetY(ball.GetY() < 0 ? 0 : WIN_HEIGHT);
-//                ball.SetSpeedY(-ball.GetSpeedY());
-//            }
-//
-////        check for collision between the ball and the left and right racket
-//            if (ball.GetX() < 60 || ball.GetX() > WIN_WIDTH - 60)
-//            {
-//                if (CheckCollisionCircleRec(Vector2{ball.GetX(), ball.GetY()}, BALL_RADIUS, leftRacket.GetRect()))
-//                {
-////                    ball.SetSpeedX((ball.GetSpeedX() > 0) ? -SPEED_FAST : SPEED_FAST);
-////                    ball.SetSpeedY((ball.GetSpeedY() > 0) ? SPEED_FAST : -SPEED_FAST);
-//////                    ball.SetX(rightRacket.GetX() - BALL_RADIUS - 1);
-//                    if(ball.GetSpeedX() < 0)
-//                    {
-//                        ball.SetSpeedX(ball.GetSpeedX() * -1);
-//                    }
-//                }
-//                else if (CheckCollisionCircleRec(Vector2{ball.GetX(), ball.GetY()}, BALL_RADIUS, rightRacket.GetRect()))
-//                {
-////                    ball.SetSpeedX((ball.GetSpeedX() > 0) ? -SPEED_FAST : SPEED_FAST);
-////                    ball.SetSpeedY((ball.GetSpeedY() > 0) ? SPEED_FAST : -SPEED_FAST);
-//////                    ball.SetX(rightRacket.GetX() - BALL_RADIUS - 1);
-//                    if(ball.GetSpeedX() > 0)
-//                    {
-//                        ball.SetSpeedX(ball.GetSpeedX() * -1);
-//                    }
-//                }
-//                else UpdateScore();
-//            }
-//
-//            if (m_LeftScore == SCORE_MAX || m_RightScore == SCORE_MAX) {
-//                m_GameState = GameState::GameOver;
-//                m_WinnerNote = (m_LeftScore == 10) ? "Left player has won!" : "Right player has won!";
-//            }
-////        }
-//    }
-//    else if(m_GameState == GameState::GameOver)
-//    {
-//        if(IsKeyPressed(KEY_SPACE))
-//        {
-//            ResetGame();
-//            m_GameState = GameState::Playing;
-//        }
-//    }
-//
-//}
-
