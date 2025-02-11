@@ -58,6 +58,11 @@ void Ball::ResetBall(float vX, float vY)
     m_VelocityY = vY;
 }
 
+//void Ball::GetBall()
+//{
+//    return
+//}
+
 //void Ball::UpdateSpeed(float velX, float velY)
 //{
 //    m_VelocityX = velX;

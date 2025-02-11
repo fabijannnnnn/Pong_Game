@@ -44,8 +44,8 @@ void Game::ResetGame()
     m_RightScore = 0;
     m_GameState = GameState::Intro;
     ball.ResetBall(SPEED_SLOW, SPEED_SLOW);
-    rightRacket.ResetRacket(RAC_POS_R);
-    leftRacket.ResetRacket(RAC_POS_L);
+    rightRacket.ResetRacket(WIN_H_HALF);
+    leftRacket.ResetRacket(WIN_H_HALF);
 }
 
 void Game::StartMessage()
@@ -131,7 +131,7 @@ void Game::UpdateScore()
     else if(ball.GetX() > WIN_WIDTH)
     {
         m_LeftScore++;
-        ball.ResetBall(SPEED_SLOW, SPEED_SLOW);
+        ball.ResetBall(-SPEED_SLOW, SPEED_SLOW);
     }
 }
 
@@ -160,46 +160,25 @@ void Game::CheckWallCollision()
     }
 }
 
-// Checks if the ball collides with the paddles
+//TODO: REPAIR THIS LOGIC SO IT COLLIDES WITH THE TOP AND THE BOTTOM AND CHANGES TRAJECTORY ACCORDINGLY
 void Game::CheckPaddleCollision()
 {
-//    if (ball.GetX() > 61 && ball.GetX() < WIN_WIDTH - 61) return;
+    if (ball.GetX() < 60 && ball.GetX() > WIN_WIDTH - 60) return;
 
     if (CheckCollisionCircleRec(Vector2{ball.GetX(), ball.GetY()}, BALL_RADIUS, leftRacket.GetRect()))
     {
-        // Side collision (left side of the racket)
-        if (ball.GetX() - BALL_RADIUS < leftRacket.GetRect().x + leftRacket.GetRect().width)
+        if(ball.GetSpeedX() < 0)
         {
-            ball.SetSpeedX(abs(ball.GetSpeedX()));  // Reverse X velocity
-        }
-        else
-        {
-            // Top/bottom collision (within racket's height)
-            if (ball.GetY() >= leftRacket.GetY() && ball.GetY() <= leftRacket.GetY() + RAC_HEIGHT)
-            {
-                ball.SetSpeedY(-ball.GetSpeedY());  // Reverse Y velocity
-            }
+            ball.SetSpeedX(-ball.GetSpeedX());
         }
     }
-
-        // Right racket collision
     else if (CheckCollisionCircleRec(Vector2{ball.GetX(), ball.GetY()}, BALL_RADIUS, rightRacket.GetRect()))
     {
-        // Side collision (right side of the racket)
-        if (ball.GetX() + BALL_RADIUS > rightRacket.GetRect().x)
+        if(ball.GetSpeedX() > 0)
         {
-            ball.SetSpeedX(-abs(ball.GetSpeedX()));  // Reverse X velocity
+            ball.SetSpeedX(-ball.GetSpeedX());
         }
-        else
-        {
-            // Top/bottom collision (within racket's height)
-            if (ball.GetY() >= rightRacket.GetY() && ball.GetY() <= rightRacket.GetY() + RAC_HEIGHT)
-            {
-                ball.SetSpeedY(-ball.GetSpeedY());  // Reverse Y velocity
-            }
-        }
-    }
-    else
+    } else
     {
         UpdateScore(); // If no collision, update score
     }
