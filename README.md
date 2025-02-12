@@ -21,7 +21,8 @@ To win, be the first to reach 10 points!
 3. `git clone https://github.com/fabijannnnnn/Pong_Game.git`
 4. `cd Pong_Game`
 5. `cmake .`
-6. `./Pong`
+6. `make`
+7. `./Pong`
 
 If you don't have raylib installed, use these commands accordingly to your platform
 #### Linux: 
