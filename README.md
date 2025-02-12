@@ -9,7 +9,7 @@ and down using the W and S keys (or the Up and Down arrow keys). The
 objective is to score by getting the ball past your opponent's paddle.
 To win, be the first to reach 10 points!
 
-### Controls
+#### Controls
 - **Space**: Start the game
 - **Esc**: Exit the game
 - **⬆️**: Move up (W or Arrow Up)
@@ -24,9 +24,9 @@ To win, be the first to reach 10 points!
 6. `./Pong`
 
 If you don't have raylib installed, use these commands accordingly to your platform
-### Linux: 
+#### Linux: 
 `sudo apt install libraylib-dev`
-### MacOS:
+#### MacOS:
 `brew install raylib`
 
 ## Features
