@@ -13,6 +13,7 @@ add_executable(Pong
         src/ball.cpp
         src/racket.cpp
         src/racket.h
+        src/settings.h
 )
 
 target_link_libraries(Pong PRIVATE raylib)

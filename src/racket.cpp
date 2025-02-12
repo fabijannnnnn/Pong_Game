@@ -1,40 +1,27 @@
 #include "racket.h"
-#include <iostream>
 
-Racket::Racket() :
-    m_Height(120),
-    m_Width(20),
-    m_Speed(500),
-    m_Score(0),
-    m_CoordX(0),
-    m_CoordY(0)
+Racket::Racket(float x, float vY) :
+    Ball(x, WIN_H_HALF, 0, vY),
+    m_Height(RAC_HEIGHT),
+    m_Width(RAC_WIDTH)
 {
-    std::cout << "Racket constructed successfully\n";
+    m_SpeedY = SPEED_FAST;
 }
 
-Racket::~Racket()
-{
-    std::cout << "Racket destructed successfully\n";
-}
-
-void Racket::Position(float x, float y)
-{
-    m_CoordX = x;
-    m_CoordY = y;
-}
-
-Rectangle Racket::GetRect()
-{
-    return Rectangle{(m_CoordX - m_Width / 2), (m_CoordY - m_Height / 2), m_Width, m_Height};
-}
+Racket::~Racket() = default;
 
 void Racket::DrawRacket(Color c)
 {
     DrawRectangleRec(GetRect(), c);
 }
 
-uint16_t Racket::AddScore()
+void Racket::ResetRacket(float y)
 {
-    m_Score++;
-    return m_Score;
+    m_CoordY = y;
+}
+
+Rectangle Racket::GetRect()
+{
+//    changes the centre of the rectangle to the middle
+    return Rectangle{m_CoordX - m_Width / 2, m_CoordY - m_Height / 2, m_Width, m_Height};
 }
