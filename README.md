@@ -10,10 +10,10 @@ objective is to score by getting the ball past your opponent's paddle.
 To win, be the first to reach 10 points!
 
 #### Controls
-- **Space**: Start the game
-- **Esc**: Exit the game
-- **⬆️**: Move up (W or Arrow Up)
-- **⬇️**: Move down (S or Arrow Down)
+- **`Space`**: Start the game
+- **`Esc`**: Exit the game
+- **`⬆️`**: Move up (W or Arrow Up)
+- **`⬇️`**: Move down (S or Arrow Down)
 
 ## Installation
 1. `mkdir Pong`
