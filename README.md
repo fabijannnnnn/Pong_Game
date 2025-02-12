@@ -34,3 +34,7 @@ If you don't have raylib installed, use these commands accordingly to your platf
 - **Simple Interface**: Easy-to-understand menu and in-game interface.
 - **Two Player Mode**: Play locally with a friend on the same device.
 - **Smooth Controls**: Responsive paddle movement using **W** and **S** or the arrow keys.
+
+## Snapshot
+
+<img src="https://github.com/user-attachments/assets/79ae5e4e-4149-4a6b-8525-2a6c2c89d4d3" alt="Databay showcase gif" title="Databay showcase gif" width="500"/>
