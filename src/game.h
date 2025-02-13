@@ -9,6 +9,7 @@ private:
     GameState m_GameState;
     std::string m_WinnerNote;
     uint16_t m_RightScore, m_LeftScore;
+    float  m_DeltaTime;
 
     static float m_FadeAlpha, m_FadeDuration, m_ElapsedTime;
 
@@ -21,8 +22,8 @@ public:
 
     void Start();
     void Render();
-    void Update(float deltaTime);
-    void HandleInput(float deltaTime);
+    void Update();
+    void HandleInput();
 
     void ResetGame();
     void StartMessage();
@@ -31,7 +32,7 @@ public:
     void UpdateScore();
     void CheckRacketCollision();
 
-    static void UpdateFadeEffect(float deltaTime);
+    void UpdateFadeEffect() const;
 };
 
 #endif //PONG_GAME_H

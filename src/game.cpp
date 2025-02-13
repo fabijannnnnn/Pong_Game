@@ -11,7 +11,8 @@ Game::Game() :
     m_WinnerNote("Draw"),
     ball(WIN_W_HALF, WIN_H_HALF, SPEED_SLOW, SPEED_SLOW),
     rightRacket(RAC_POS_R, SPEED_FAST),
-    leftRacket(RAC_POS_L, SPEED_FAST)
+    leftRacket(RAC_POS_L, SPEED_FAST),
+    m_DeltaTime(0.0f)
 {
     InitWindow(WIN_WIDTH, WIN_HEIGHT, "PONG");
     SetTargetFPS(FPS);
@@ -27,19 +28,17 @@ void Game::Start()
 {
     while(!WindowShouldClose())
     {
-        float deltaTime = GetFrameTime();
+        m_DeltaTime = GetFrameTime();
         BeginDrawing();
         Render();
-        HandleInput(deltaTime);
-        Update(deltaTime);
+        HandleInput();
+        Update();
         EndDrawing();
     }
 }
 
-void Game::Update(float dT)
+void Game::Update()
 {
-    float deltaTime = dT;
-
     switch (m_GameState)
     {
         case GameState::Intro:
@@ -49,11 +48,11 @@ void Game::Update(float dT)
         case GameState::Playing:
             if (m_FadeAlpha > 0.0f)
             {
-                UpdateFadeEffect(deltaTime);
+                UpdateFadeEffect();
                 return;
             }
 
-            ball.MoveBall(deltaTime);
+            ball.MoveBall(m_DeltaTime);
             ball.CheckWallCollision();
             CheckRacketCollision();
             CheckGameOver();
@@ -105,22 +104,20 @@ void Game::Render()
 }
 
 //Input Handling (HandleInput())
-void Game::HandleInput(float dT)
+void Game::HandleInput()
 {
-    float deltaTime = dT;
-
     if(IsKeyDown(KEY_W))
     {
         if(leftRacket.GetY() > RAC_TOP)
         {
-            leftRacket.SetY(leftRacket.GetY() - leftRacket.GetSpeedY() * deltaTime);
+            leftRacket.SetY(leftRacket.GetY() - leftRacket.GetSpeedY() * m_DeltaTime);
         }
 
     } else if(IsKeyDown(KEY_S))
     {
         if(leftRacket.GetY() < RAC_BOT)
         {
-            leftRacket.SetY(leftRacket.GetY() + leftRacket.GetSpeedY() * deltaTime);
+            leftRacket.SetY(leftRacket.GetY() + leftRacket.GetSpeedY() * m_DeltaTime);
         }
     }
 
@@ -128,13 +125,13 @@ void Game::HandleInput(float dT)
     {
         if(rightRacket.GetY() > RAC_TOP)
         {
-            rightRacket.SetY(rightRacket.GetY() - rightRacket.GetSpeedY() * deltaTime);
+            rightRacket.SetY(rightRacket.GetY() - rightRacket.GetSpeedY() * m_DeltaTime);
         }
     } else if(IsKeyDown(KEY_DOWN))
     {
         if(rightRacket.GetY() < RAC_BOT)
         {
-            rightRacket.SetY(rightRacket.GetY() + rightRacket.GetSpeedY() * deltaTime);
+            rightRacket.SetY(rightRacket.GetY() + rightRacket.GetSpeedY() * m_DeltaTime);
         }
     }
 }
@@ -192,9 +189,9 @@ void Game::CheckRacketCollision()
 }
 
 //Helper Function for fading effect (UpdateFadeEffect())
-void Game::UpdateFadeEffect(float deltaTime)
+void Game::UpdateFadeEffect() const // const because it modifies only static attributes
 {
-    m_ElapsedTime += deltaTime;
+    m_ElapsedTime += m_DeltaTime;
     m_FadeAlpha = 1.0f - (m_ElapsedTime / m_FadeDuration);
     if (m_FadeAlpha == 0.0f)
         return;
